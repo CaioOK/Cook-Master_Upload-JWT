@@ -15,6 +15,8 @@ app.use(bodyParser.json());
 
 app.post('/users', UsersController.insertUser);
 
+app.post('/login', UsersController.login);
+
 app.use(errorMiddleware);
 
 module.exports = app;

@@ -13,13 +13,25 @@ const findByEmail = async (email) => (
     .then((db) => db.collection(collectionName).findOne({ email }))
 );
 
+const findByName = async (name) => (
+  connection()
+    .then((db) => db.collection(collectionName).findOne({ name }))
+);
+
+const login = async (email, password) => (
+  connection()
+    .then((db) => db.collection(collectionName).findOne({ email, password }))
+);
+
 module.exports = {
   insertUser,
   findByEmail,
+  findByName,
+  login,
 };
 
 // const testing = async () => {
-//     const result = await findByEmail('trismegisto@hermes.tudovibra');
+//     const result = await login('trismegisto@hermes.tudovibra');
   
 //     console.log(result);
 // };

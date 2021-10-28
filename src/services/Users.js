@@ -14,6 +14,21 @@ const insertUser = async (name, email, password) => {
   return UsersModel.insertUser(name, email, password);
 };
 
+const login = async (email, password) => {
+  const user = await UsersModel.login(email, password);
+
+  if (!user) {
+    return {
+      error: {
+        message: 'Incorrect username or password',
+      },
+    };
+  }
+
+  return true;
+};
+
 module.exports = {
   insertUser,
+  login,
 };

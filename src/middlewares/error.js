@@ -11,5 +11,9 @@ module.exports = async (err, _req, res, _next) => {
     return res.status(409).json(err);
   }
 
-  return res.status(400).json({ err, att: 'deu ruim!' });
+  if (err.message === 'Incorrect username or password') {
+    return res.status(401).json(err);
+  }
+
+  return res.status(403).json({ message: 'deu ruim!' });
 };

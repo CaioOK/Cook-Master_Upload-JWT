@@ -32,11 +32,11 @@ const login = rescue(async (req, res, next) => {
     return res.status(401).json({ message: 'All fields must be filled' });
   }
 
-  const { error } = await UsersService.login(email, password);
+  const { error, role } = await UsersService.login(email, password);
 
   if (error) return next(error);
 
-  const token = jwt.sign({ user: { email, password } }, secret, jwtConfig);
+  const token = jwt.sign({ email, role }, secret, jwtConfig);
 
   res.status(200).json({ token });
 });

@@ -15,5 +15,5 @@ module.exports = async (err, _req, res, _next) => {
     return res.status(401).json(err);
   }
 
-  return res.status(403).json({ message: 'deu ruim!' });
+  return res.status(403).json({ message: 'deu ruim!', err });
 };

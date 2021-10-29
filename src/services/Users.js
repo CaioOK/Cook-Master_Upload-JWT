@@ -25,7 +25,7 @@ const login = async (email, password) => {
     };
   }
 
-  return true;
+  return { email, role: user.role };
 };
 
 module.exports = {

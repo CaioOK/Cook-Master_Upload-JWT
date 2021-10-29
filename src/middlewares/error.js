@@ -13,6 +13,7 @@ module.exports = async (err, _req, res, _next) => {
     case 'recipe not found':
       return res.status(404).json(err);
 
-    default: return res.status(404).json({ message: 'Deu ruim' });
+    default:
+    return res.status(401).json(err);
   }
 };

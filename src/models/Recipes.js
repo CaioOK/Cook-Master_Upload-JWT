@@ -22,8 +22,25 @@ const findById = (id) => {
     .then((db) => db.collection(collectionName).findOne({ _id: new ObjectId(id) }));
 };
 
+const updateRecipe = (recipeId, name, ingredients, preparation) => (
+  connection()
+    .then((db) => db.collection(collectionName)
+    .updateOne({ _id: new ObjectId(recipeId) }, { $set: { name, ingredients, preparation } }))
+);
+
 module.exports = {
   insertRecipe,
   getAll,
   findById,
+  updateRecipe,
 };
+
+// const testing = async () => {
+//   const result = await updateRecipe(
+//     '617c1e2e750dd34c80c6a746', 'Ovo frit na mantega', 'Ovo', 'Poi em mantega quent',
+//   );
+
+//   console.log(result);
+// };
+
+// testing();

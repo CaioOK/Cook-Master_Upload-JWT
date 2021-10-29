@@ -21,6 +21,8 @@ app.get('/recipes/:id', RecipesController.findById);
 
 app.post('/recipes', authMiddleware, RecipesController.insertRecipe);
 
+app.put('/recipes/:id', authMiddleware, RecipesController.updateRecipe);
+
 app.post('/users', UsersController.insertUser);
 
 app.post('/login', UsersController.login);

@@ -19,6 +19,26 @@ const insertRecipe = rescue(async (req, res, next) => {
   res.status(201).json({ recipe });
 });
 
+const updateRecipe = rescue(async (req, res, next) => {
+  const recipeId = req.params.id;
+  const recipeData = req.body;
+  const { _id, role } = req.user;
+
+  const { error } = Joi.object({
+    name: Joi.string().not().empty().required(),
+    ingredients: Joi.string().not().empty().required(),
+    preparation: Joi.string().not().empty().required(),
+  }).validate(req.body);
+
+  if (error) return next(error);
+
+  const updatedRecipe = await RecipesService.updateRecipe({ recipeId, ...recipeData }, _id, role);
+
+  if (updatedRecipe.error) return next(updatedRecipe.error);
+
+  res.status(200).json(updatedRecipe);
+});
+
 const getAll = rescue(async (_req, res) => {
   const recipes = await RecipesService.getAll();
 
@@ -39,4 +59,5 @@ module.exports = {
   insertRecipe,
   getAll,
   findById,
+  updateRecipe,
 };

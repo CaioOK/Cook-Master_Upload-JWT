@@ -17,6 +17,8 @@ app.use(bodyParser.json());
 
 app.get('/recipes', RecipesController.getAll);
 
+app.get('/recipes/:id', RecipesController.findById);
+
 app.post('/recipes', authMiddleware, RecipesController.insertRecipe);
 
 app.post('/users', UsersController.insertUser);

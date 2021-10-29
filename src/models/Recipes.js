@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
 const collectionName = 'recipes';
@@ -14,7 +15,15 @@ const getAll = () => (
     .then((db) => db.collection(collectionName).find().toArray())
 );
 
+const findById = (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  return connection()
+    .then((db) => db.collection(collectionName).findOne({ _id: new ObjectId(id) }));
+};
+
 module.exports = {
   insertRecipe,
   getAll,
+  findById,
 };

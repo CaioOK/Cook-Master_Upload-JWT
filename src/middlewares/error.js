@@ -1,19 +1,18 @@
 module.exports = async (err, _req, res, _next) => {
   if (err.isJoi) {
-    const error = {
-        message: 'Invalid entries. Try again.',
-    };
-
-    return res.status(400).json(error);
+    return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
 
-  if (err.message === 'Email already registered') {
-    return res.status(409).json(err);
-  }
+  switch (err.message) {
+    case 'Email already registered':
+      return res.status(409).json(err);
 
-  if (err.message === 'Incorrect username or password') {
-    return res.status(401).json(err);
-  }
+    case 'Incorrect username or password':
+      return res.status(401).json(err);
 
-  return res.status(403).json({ message: 'deu ruim!', err });
+    case 'recipe not found':
+      return res.status(404).json(err);
+
+    default: return res.status(404).json({ message: 'Deu ruim' });
+  }
 };

@@ -19,6 +19,13 @@ const insertRecipe = rescue(async (req, res, next) => {
   res.status(201).json({ recipe });
 });
 
+const getAll = rescue(async (_req, res) => {
+  const recipes = await RecipesService.getAll();
+
+  res.status(200).json(recipes);
+});
+
 module.exports = {
   insertRecipe,
+  getAll,
 };

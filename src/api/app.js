@@ -15,11 +15,13 @@ app.get('/', (request, response) => {
 
 app.use(bodyParser.json());
 
+app.get('/recipes', RecipesController.getAll);
+
+app.post('/recipes', authMiddleware, RecipesController.insertRecipe);
+
 app.post('/users', UsersController.insertUser);
 
 app.post('/login', UsersController.login);
-
-app.post('/recipes', authMiddleware, RecipesController.insertRecipe);
 
 app.use(errorMiddleware);
 

@@ -19,6 +19,17 @@ const insertRecipe = rescue(async (req, res, next) => {
   res.status(201).json({ recipe });
 });
 
+const insertImage = rescue(async (req, res, next) => {
+  const recipeId = req.params.id;
+  const { _id, role } = req.user;
+  const imageUrl = `localhost:3000/${req.file.path.replace('.jpg', '.jpeg')}`;
+
+  const updatedRecipe = await RecipesService.insertImage(recipeId, imageUrl, _id, role);
+
+  if (updatedRecipe.error) return next(updatedRecipe.error);
+  res.status(200).json(updatedRecipe);
+});
+
 const updateRecipe = rescue(async (req, res, next) => {
   const recipeId = req.params.id;
   const recipeData = req.body;
@@ -71,4 +82,5 @@ module.exports = {
   findById,
   updateRecipe,
   deleteRecipe,
+  insertImage,
 };

@@ -10,6 +10,12 @@ const insertRecipe = ({ name, ingredients, preparation }, userId) => (
     .then((data) => ({ _id: data.insertedId, name, ingredients, preparation, userId }))
 );
 
+const insertImage = (recipeId, imageUrl) => (
+  connection()
+    .then((db) => db.collection(collectionName)
+    .updateOne({ _id: new ObjectId(recipeId) }, { $set: { image: imageUrl } }))
+);
+
 const getAll = () => (
   connection()
     .then((db) => db.collection(collectionName).find().toArray())
@@ -39,10 +45,14 @@ module.exports = {
   findById,
   updateRecipe,
   deleteRecipe,
+  insertImage,
 };
 
 // const testing = async () => {
-//   const result = await deleteRecipe('617c95709ff8dabe918b17a1');
+//   const result = await insertImage(
+//     '617dae6159e02e8bf79b9cbb',
+//     'localhost:3000/src/uploads/xablau1234.jpg',
+//   );
 
 //   console.log(result);
 // };

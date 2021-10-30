@@ -6,6 +6,30 @@ const insertRecipe = async ({ name, ingredients, preparation }, userId) => {
   return newRecipe;
 };
 
+const insertImage = async (recipeId, imageUrl, userId, role) => {
+  const recipe = await RecipesModel.findById(recipeId);
+
+  if (!recipe) {
+    return {
+      error: {
+        message: 'recipe not found',
+      },
+    };
+  }
+  
+  if (role !== 'admin' && JSON.stringify(userId) !== JSON.stringify(recipe.userId)) {
+    return {
+      error: {
+        message: 'You do not have authorization to update this recipe',
+      },
+    };
+  }
+
+  await RecipesModel.insertImage(recipeId, imageUrl);
+
+  return { ...recipe, image: imageUrl };
+};
+
 const getAll = async () => {
   const recipes = await RecipesModel.getAll();
 
@@ -66,4 +90,5 @@ module.exports = {
   findById,
   updateRecipe,
   deleteRecipe,
+  insertImage,
 };

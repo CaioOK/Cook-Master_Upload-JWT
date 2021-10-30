@@ -2,7 +2,7 @@ module.exports = async (err, _req, res, _next) => {
   if (err.isJoi) {
     return res.status(400).json({ message: 'Invalid entries. Try again.' });
   }
-
+  // console.log(err);
   switch (err.message) {
     case 'Email already registered':
       return res.status(409).json(err);

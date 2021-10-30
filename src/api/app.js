@@ -27,6 +27,8 @@ app.post('/users', UsersController.insertUser);
 
 app.post('/login', UsersController.login);
 
+app.delete('/recipes/:id', authMiddleware, RecipesController.deleteRecipe);
+
 app.use(errorMiddleware);
 
 module.exports = app;

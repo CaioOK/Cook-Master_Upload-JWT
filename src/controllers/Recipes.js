@@ -39,6 +39,16 @@ const updateRecipe = rescue(async (req, res, next) => {
   res.status(200).json(updatedRecipe);
 });
 
+const deleteRecipe = rescue(async (req, res, next) => {
+  const recipeId = req.params.id;
+  const { _id, role } = req.user;
+  const { error } = await RecipesService.deleteRecipe(recipeId, _id, role);
+
+  if (error) return next(error);
+
+  res.status(204).send();
+});
+
 const getAll = rescue(async (_req, res) => {
   const recipes = await RecipesService.getAll();
 
@@ -60,4 +70,5 @@ module.exports = {
   getAll,
   findById,
   updateRecipe,
+  deleteRecipe,
 };

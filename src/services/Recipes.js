@@ -12,8 +12,8 @@ const getAll = async () => {
   return recipes;
 };
 
-const findById = async (id) => {
-  const recipe = await RecipesModel.findById(id);
+const findById = async (recipeId) => {
+  const recipe = await RecipesModel.findById(recipeId);
 
   if (!recipe) {
     return {
@@ -29,14 +29,14 @@ const findById = async (id) => {
 const updateRecipe = async ({ recipeId, name, ingredients, preparation }, userId, role) => {
   const recipe = await RecipesModel.findById(recipeId);
 
-  if (role !== 'admin' && userId.toString() !== recipe.userId.toString()) {
+  if (role !== 'admin' && JSON.stringify(userId) !== JSON.stringify(recipe.userId)) {
     return {
       error: {
         message: 'You do not have authorization to update this recipe',
       },
     };
   }
-  
+
   await RecipesModel.updateRecipe(recipeId, name, ingredients, preparation);
 
   const updatedRecipe = await RecipesModel.findById(recipeId);
@@ -44,9 +44,26 @@ const updateRecipe = async ({ recipeId, name, ingredients, preparation }, userId
   return updatedRecipe;
 };
 
+const deleteRecipe = async (recipeId, userId, role) => {
+  const recipe = await RecipesModel.findById(recipeId);
+
+  if (role !== 'admin' && JSON.stringify(userId) !== JSON.stringify(recipe.userId)) {
+    return {
+      error: {
+        message: 'You do not have authorization to delete this recipe',
+      },
+    };
+  }
+
+  await RecipesModel.deleteRecipe(recipeId);
+
+  return true;
+};
+
 module.exports = {
   insertRecipe,
   getAll,
   findById,
   updateRecipe,
+  deleteRecipe,
 };

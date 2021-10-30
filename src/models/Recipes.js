@@ -15,11 +15,11 @@ const getAll = () => (
     .then((db) => db.collection(collectionName).find().toArray())
 );
 
-const findById = (id) => {
-  if (!ObjectId.isValid(id)) return null;
+const findById = (recipeId) => {
+  if (!ObjectId.isValid(recipeId)) return null;
 
   return connection()
-    .then((db) => db.collection(collectionName).findOne({ _id: new ObjectId(id) }));
+    .then((db) => db.collection(collectionName).findOne({ _id: new ObjectId(recipeId) }));
 };
 
 const updateRecipe = (recipeId, name, ingredients, preparation) => (
@@ -28,17 +28,21 @@ const updateRecipe = (recipeId, name, ingredients, preparation) => (
     .updateOne({ _id: new ObjectId(recipeId) }, { $set: { name, ingredients, preparation } }))
 );
 
+const deleteRecipe = (recipeId) => (
+  connection()
+    .then((db) => db.collection(collectionName).deleteOne({ _id: new ObjectId(recipeId) }))
+);
+
 module.exports = {
   insertRecipe,
   getAll,
   findById,
   updateRecipe,
+  deleteRecipe,
 };
 
 // const testing = async () => {
-//   const result = await updateRecipe(
-//     '617c1e2e750dd34c80c6a746', 'Ovo frit na mantega', 'Ovo', 'Poi em mantega quent',
-//   );
+//   const result = await deleteRecipe('617c95709ff8dabe918b17a1');
 
 //   console.log(result);
 // };

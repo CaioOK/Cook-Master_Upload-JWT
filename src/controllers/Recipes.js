@@ -22,7 +22,7 @@ const insertRecipe = rescue(async (req, res, next) => {
 const insertImage = rescue(async (req, res, next) => {
   const recipeId = req.params.id;
   const { _id, role } = req.user;
-  const imageUrl = `localhost:3000/${req.file.path.replace('.jpg', '.jpeg')}`;
+  const imageUrl = `localhost:3000/${req.file.path}`;
 
   const updatedRecipe = await RecipesService.insertImage(recipeId, imageUrl, _id, role);
 

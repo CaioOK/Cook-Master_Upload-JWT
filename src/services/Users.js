@@ -14,6 +14,20 @@ const insertUser = async (name, email, password) => {
   return UsersModel.insertUser(name, email, password);
 };
 
+const insertAdmin = async (name, email, password, role) => {
+  const alreadyExists = await UsersModel.findByEmail(email);
+
+  if (alreadyExists) {
+    return {
+      error: {
+        message: 'Email already registered',
+      },
+    };
+  }
+
+  return UsersModel.insertUser(name, email, password, role);
+};
+
 const login = async (email, password) => {
   const user = await UsersModel.login(email, password);
 
@@ -31,4 +45,5 @@ const login = async (email, password) => {
 module.exports = {
   insertUser,
   login,
+  insertAdmin,
 };

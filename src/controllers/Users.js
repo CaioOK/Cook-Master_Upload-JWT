@@ -4,6 +4,8 @@ const rescue = require('express-rescue');
 const UsersService = require('../services/Users');
 
 const insertUser = rescue(async (req, res, next) => {
+  const { name, email, password } = req.body;
+
   const { error } = Joi.object({
     name: Joi.string().not().empty().required(),
     email: Joi.string().email().required(),
@@ -12,11 +14,30 @@ const insertUser = rescue(async (req, res, next) => {
 
   if (error) return next(error);
 
-  const { name, email, password } = req.body;
-
   const user = await UsersService.insertUser(name, email, password);
 
   if (user.error) return next(user.error);
+  res.status(201).json({ user });
+});
+
+const insertAdmin = rescue(async (req, res, next) => {
+  const { role } = req.user;
+  const { name, email, password } = req.body;
+
+  if (role !== 'admin') {
+    return res.status(403).json({ message: 'Only admins can register new admins' });
+  }
+
+  const { error } = Joi.object({
+    name: Joi.string().not().empty().required(),
+    email: Joi.string().not().empty().required(),
+    password: Joi.string().not().empty().required(),
+  }).validate(req.body);
+
+  if (error) return next(error);
+
+  const user = await UsersService.insertAdmin(name, email, password, role);
+
   res.status(201).json({ user });
 });
 
@@ -44,4 +65,5 @@ const login = rescue(async (req, res, next) => {
 module.exports = {
   insertUser,
   login,
+  insertAdmin,
 };

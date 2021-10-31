@@ -51,6 +51,8 @@ app.put('/recipes/:id', authMiddleware, RecipesController.updateRecipe);
 
 app.post('/users', UsersController.insertUser);
 
+app.post('/users/admin', authMiddleware, UsersController.insertAdmin);
+
 app.post('/login', UsersController.login);
 
 app.delete('/recipes/:id', authMiddleware, RecipesController.deleteRecipe);
